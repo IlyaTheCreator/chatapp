@@ -12,6 +12,22 @@ const io = socketIO(server)
 io.on("connection", socket => {
     console.log("A new user just connected");
 
+    // socket.emit("newMessage", {
+    //     from: "iluha",
+    //     text: "hello, I'm iluha!"
+    // })
+
+    socket.on("createMessage", message => {
+        console.log(`createMessage: ${message.text}`);
+
+        // broadcasting:
+        io.emit("newMessage", {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime()
+        })
+    })
+
     socket.on("disconnect", () => {
         console.log("User was disconnected");
     })
