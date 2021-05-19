@@ -12,6 +12,19 @@ const io = socketIO(server)
 io.on("connection", socket => {
     console.log("A new user just connected");
 
+    socket.emit("newMessage", {
+        from: "Admin",
+        text: "Welcome to the chat app!",
+        createdAt: new Date().getTime()
+    })
+
+    socket.broadcast.emit("newMessage", {
+        from: "Admin",
+        text: "New user joined",
+        createdAt: new Date().getTime()
+    })
+
+
     // socket.emit("newMessage", {
     //     from: "iluha",
     //     text: "hello, I'm iluha!"
@@ -21,7 +34,14 @@ io.on("connection", socket => {
         console.log(`createMessage: ${message.text}`);
 
         // broadcasting:
-        io.emit("newMessage", {
+        // io.emit("newMessage", {
+        //     from: message.from,
+        //     text: message.text,
+        //     createdAt: new Date().getTime()
+        // })
+
+        // broadcast to all other people and not for me
+        socket.broadcast.emit("newMessage", {
             from: message.from,
             text: message.text,
             createdAt: new Date().getTime()

@@ -14,5 +14,5 @@ socket.on("disconnect", function () {
 })
 
 socket.on("newMessage", function (message) {
-    document.querySelector("h1").innerText = message.text;
+    console.log(message)
 })
